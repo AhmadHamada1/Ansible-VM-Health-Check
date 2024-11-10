@@ -1,0 +1,8 @@
+[webservers]
+frontend ansible_host=20.173.90.61 ansible_user=usera
+
+[dbservers]
+backend ansible_host=20.173.90.61 ansible_user=usera
+
+[sre]
+20.173.90.61 ansible_user=usera

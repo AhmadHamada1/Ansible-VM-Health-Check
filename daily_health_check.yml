@@ -1,0 +1,24 @@
+- name: Daily Health Check and Update
+  hosts: sre
+  become: yes
+  tasks:
+    - name: Check uptime
+      command: uptime
+      register: uptime_result
+
+    - name: Check disk space
+      command: df -h /
+      register: disk_space_result
+
+    - name: Send message to Teams via Webhook
+      uri:
+        url: "https://gizasystems.webhook.office.com/webhookb2/d19c43d2-19de-4195-afc0-8950b3d19137@526b8ab1-b977-4460-8087-39fd2ef8859e/IncomingWebhook/dbf308da7f75406d97f5b783760d5e1c/f3abbd35-ff55-4e0d-8a8d-7ddfe0f9ece4/V2KciLcwjCdeMpQ84qzsGopAOdihzdP4Vlipm08S4_zWQ1"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "title": "Daily automation",
+            "text": "Daily System Report\n\nUptime: {{ uptime_result.stdout }}\nDisk Space: {{ disk_space_result.stdout }}"
+          }
+        body_format: json
